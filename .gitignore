@@ -1,3 +1,5 @@
 /vendor/
 .idea
 test-output/*
+atlassian
+payload.json
