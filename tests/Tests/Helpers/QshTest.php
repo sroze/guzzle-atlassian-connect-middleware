@@ -67,9 +67,9 @@ class QshTest extends TestCase
     {
         return [
             [
-                '536378242f0cd9a2a0b909a30a8ab1fb608f27891ec4acf250f42e66c04ca220',
+                'bb3d17270ec43e3acf9956eb404ed8f47d42bf0f9ef926a32888be879c944e18',
                 'GET',
-                '/some/path?with=parameter&other=parameter'
+                '/some/path?with=parameter&other=parameter,with.a.comma'
             ],
             [
                 '93ff4bd7660c5e618e66aaf7ae806c408d1746625b3a8407e1814320f0f3e844',

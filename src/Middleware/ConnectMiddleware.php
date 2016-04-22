@@ -50,7 +50,7 @@ class ConnectMiddleware
     {
         return function (RequestInterface $request, array $options) use (&$handler) {
 
-            $url = str_replace($this->appContext, "", $request->getUri());
+            $url = rawurldecode(str_replace($this->appContext, "", $request->getUri()));
 
             $this->auth
                 ->getTokenInstance()
