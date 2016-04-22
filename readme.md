@@ -14,3 +14,8 @@ As you may have seen, Atlassian has a pretty complex authentication system, even
 ## What it is not
 * A full Atlassian \[name-your-product\] client.
 
+## Usage
+
+See the index.php at root of this repository.
+
+## Real life testing
