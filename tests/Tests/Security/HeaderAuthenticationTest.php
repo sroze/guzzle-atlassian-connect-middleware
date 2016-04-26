@@ -50,4 +50,27 @@ class HeaderAuthenticationTest extends TestCase
         );
 
     }
+
+    /**
+     * @test
+     */
+    public function setQueryString_PassToToken_Success()
+    {
+        $headerAuthentication = new HeaderAuthentication('key', 'sharedSecret');
+        $headerAuthentication->setQueryString('GET', '/some/path');
+        
+        $token = $headerAuthentication->getTokenInstance();
+        $token->setIssuedAtTime(123456);
+        $token->setValidityDuration(123457);
+
+        $this->assertEquals(
+            ['Authorization' => 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZXkiLCJpYXQiOjEyMzQ1NiwiZXhwIjoyNDY5MTMsInFzaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMifQ.Uy8F4KCV4MQ1U6biaWt8EHufYmmEuKKbYX406SoAgCA'],
+            $headerAuthentication->getHeaders()
+        );
+
+        $this->assertEmpty(
+            $headerAuthentication->getQueryParameters()
+        );
+
+    }
 }

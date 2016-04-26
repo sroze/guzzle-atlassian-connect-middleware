@@ -50,26 +50,22 @@ class ConnectMiddlewareTest extends TestCase
     public function setUp()
     {
 
-        $this->uri = new Uri('http:://appurl.com/application/some/path');
+        $this->uri = new Uri('http:://appurl.com/application/some/path?expand=body.view,children.page.body.view&title=Seller+-+User+Tutorials');
         $this->appContext = 'http:://appurl.com/application';
 
         $this->auth = $this->getMock(AuthenticationInterface::class);
         $this->request = $this->getMock(RequestInterface::class);
-        $token = $this->getMockWithoutInvokingTheOriginalConstructor(JwtToken::class);
+        
 
         $this->request->expects($this->once())
             ->method('getMethod')
             ->willReturn('get');
 
+
+
         $this->auth->expects($this->once())
-            ->method('getTokenInstance')
-            ->willReturn($token);
-
-
-
-        $token->expects($this->once())
             ->method('setQueryString')
-            ->with('get', '/some/path')
+            ->with('get', '/some/path?expand=body.view,children.page.body.view&title=Seller+-+User+Tutorials')
             ->willReturnSelf();
     }
 
@@ -120,7 +116,6 @@ class ConnectMiddlewareTest extends TestCase
      */
     public function invoke_QueryParameters_Success()
     {
-
         $this->auth
             ->expects($this->once())
             ->method('getHeaders')

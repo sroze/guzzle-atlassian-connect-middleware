@@ -32,8 +32,7 @@ abstract class AbstractAuthentication implements AuthenticationInterface
     {
         $this->token = new JwtToken($key, $sharedSecret);
     }
-
-
+    
     /**
      * {@inheritdoc}
      */
@@ -53,8 +52,16 @@ abstract class AbstractAuthentication implements AuthenticationInterface
     /**
      * {@inheritdoc}
      */
-    public function &getTokenInstance()
+    public function getTokenInstance()
     {
         return $this->token;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryString($method, $url)
+    {
+        return $this->token->setQueryString($method, $url);
     }
 }

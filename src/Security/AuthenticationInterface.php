@@ -8,6 +8,8 @@
 
 namespace Adlogix\GuzzleAtlassianConnect\Security;
 
+use Adlogix\GuzzleAtlassianConnect\Entity\JwtToken;
+
 /**
  * Interface AuthenticationInterface
  * @package Adlogix\GuzzleAtlassianConnect\Security
@@ -29,5 +31,13 @@ interface AuthenticationInterface
     /**
      * @return JwtToken
      */
-    public function &getTokenInstance();
+    public function getTokenInstance();
+
+    /**
+     * @param string $method
+     * @param string $url
+     *
+     * @return $this
+     */
+    public function setQueryString($method, $url);
 }

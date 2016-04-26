@@ -21,9 +21,11 @@ use GuzzleHttp\Psr7\Uri;
  * this is needed to sign our request and to validate the requests from the application.
  */
 $sharedSecret = '';
+$baseUrl = '';
 if (file_exists('payload.json')) {
     $payload = json_decode(file_get_contents('payload.json'));
     $sharedSecret = $payload->sharedSecret;
+    $baseUrl = $payload->baseUrl;
 }
 
 /**
@@ -45,7 +47,7 @@ if (file_exists('payload.json')) {
  */
 $middleware = new ConnectMiddleware(
     new QueryParamAuthentication('ourKey', $sharedSecret),
-    "http://atlassian-confluence.dev/confluence"
+    $baseUrl
 );
 
 
@@ -60,7 +62,7 @@ $stack->push($middleware);
  */
 $client = new Client(
     [
-        'base_uri' => "http://atlassian-confluence.dev/confluence/rest/api/",
+        'base_uri' => $baseUrl.'/rest/api/',
         'handler'  => $stack,
         'debug'    => true
     ]

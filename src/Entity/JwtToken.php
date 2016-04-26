@@ -112,7 +112,7 @@ class JwtToken
         $payload = [
             'iss' => $this->issuer,
             'iat' => $this->issuedAtTime,
-            'exp' => $this->issuedAtTime + $this->validityDuration ,
+            'exp' => $this->issuedAtTime + $this->validityDuration,
             'qsh' => $this->queryStringHash
         ];
 
@@ -167,7 +167,6 @@ class JwtToken
         $this->queryStringHash = Qsh::create($method, $url);
         return $this;
     }
-
 
     /**
      * @param string $audience

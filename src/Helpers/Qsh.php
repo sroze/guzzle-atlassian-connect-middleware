@@ -14,8 +14,7 @@ namespace Adlogix\GuzzleAtlassianConnect\Helpers;
 /**
  * Class QSH
  * QSH is a Query String Hash requested by Atlassian in the JWT token
- * @see https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html#qsh
-
+ * @see     https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html#qsh
  * @package Adlogix\GuzzleAtlassianConnect\Helpers
  * @author  Cedric Michaux <cedric@adlogix.eu>
  */
@@ -35,9 +34,26 @@ class Qsh
         $path = $parts['path'];
 
         $canonicalQuery = '';
-        if (!empty($parts['query'])) {
-            $query = $parts['query'];
+        if (array_key_exists('query', $parts)) {
+            $canonicalQuery = self::getCanonicalQuery($parts['query']);
+        }
+
+        $qshString = $method . '&' . $path . '&' . $canonicalQuery;
+        $qsh = hash('sha256', $qshString);
+
+        return $qsh;
+    }
+
+    /**
+     * @param string $query
+     *
+     * @return string
+     */
+    private static function getCanonicalQuery($query = '')
+    {
+        if (!empty($query)) {
             $queryParts = explode('&', $query);
+            $query = '';
             $queryArray = [];
 
             foreach ($queryParts as $queryPart) {
@@ -55,15 +71,12 @@ class Qsh
 
             foreach ($queryArray as $key => $pieceOfQuery) {
                 $pieceOfQuery = implode(',', $pieceOfQuery);
-                $canonicalQuery .= $key.'='.$pieceOfQuery.'&';
+                $query .= $key . '=' . $pieceOfQuery . '&';
             }
 
-            $canonicalQuery = rtrim($canonicalQuery, '&');
+            $query = rtrim($query, '&');
         }
 
-        $qshString = $method.'&'.$path.'&'.$canonicalQuery;
-        $qsh = hash('sha256', $qshString);
-
-        return $qsh;
+        return $query;
     }
 }

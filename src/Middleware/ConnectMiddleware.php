@@ -52,19 +52,42 @@ class ConnectMiddleware
 
             $url = rawurldecode(str_replace($this->appContext, "", $request->getUri()));
 
-            $this->auth
-                ->getTokenInstance()
-                ->setQueryString($request->getMethod(), $url);
+            $this->auth->setQueryString($request->getMethod(), $url);
 
-            foreach ($this->auth->getHeaders() as $key => $value) {
-                $request = $request->withHeader($key, $value);
-            }
+            $request = $this->appendHeaders($request);
+            $request = $this->appendQueryParams($request);
 
-            foreach ($this->auth->getQueryParameters() as $key => $value) {
-                $request = $request->withUri(Uri::withQueryValue($request->getUri(), $key, $value));
-            }
 
             return $handler($request, $options);
         };
+    }
+
+    /**
+     * @param RequestInterface $request
+     *
+     * @return RequestInterface
+     */
+    private function appendHeaders(RequestInterface $request)
+    {
+        $headers = $this->auth->getHeaders();
+        foreach ($headers as $key => $value) {
+            $request = $request->withHeader($key, $value);
+        }
+        return $request;
+    }
+
+    /**
+     * @param RequestInterface $request
+     *
+     * @return RequestInterface
+     */
+    private function appendQueryParams(RequestInterface $request)
+    {
+        $queryParams = $this->auth->getQueryParameters();
+        foreach ($queryParams as $key => $value) {
+            $uri = Uri::withQueryValue($request->getUri(), $key, $value);
+            $request = $request->withUri($uri);
+        }
+        return $request;
     }
 }
