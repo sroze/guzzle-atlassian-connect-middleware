@@ -21,11 +21,9 @@ class HeaderAuthentication extends AbstractAuthentication
      */
     public function getHeaders()
     {
-        return array_merge(
-            parent::getHeaders(),
-            [
-                "Authorization" => sprintf('JWT %s', $this->token->sign())
-            ]
-        );
+        return [
+            "Authorization" => sprintf('JWT %s', $this->token->sign())
+        ];
+
     }
 }

@@ -24,11 +24,8 @@ class QueryParamAuthentication extends AbstractAuthentication
      */
     public function getQueryParameters()
     {
-        return array_merge(
-            parent::getQueryParameters(),
-            [
-                "jwt" => $this->token->sign()
-            ]
-        );
+        return [
+            "jwt" => $this->token->sign()
+        ];
     }
 }

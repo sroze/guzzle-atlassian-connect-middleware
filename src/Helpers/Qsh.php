@@ -57,12 +57,10 @@ class Qsh
             $queryArray = [];
 
             foreach ($queryParts as $queryPart) {
-                $pieces = explode('=', $queryPart);
-                $key = array_shift($pieces);
-                $key = rawurlencode($key);
+                $pieces = explode('=', $queryPart, 2);
 
-                $value = substr($queryPart, strlen($key) + 1);
-                $value = rawurlencode($value);
+                $key = rawurlencode($pieces[0]);
+                $value = rawurlencode($pieces[1]);
 
                 $queryArray[$key][] = $value;
             }
