@@ -12,7 +12,7 @@ use Adlogix\GuzzleAtlassianConnect\Middleware\ConnectMiddleware;
 use Adlogix\GuzzleAtlassianConnect\Security\QueryParamAuthentication;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\Uri;
+use Silex\Application;
 
 /**
  * See the 'installed' webhook on how to recover this payload.
@@ -62,7 +62,7 @@ $stack->push($middleware);
  */
 $client = new Client(
     [
-        'base_uri' => $baseUrl.'/rest/api/',
+        'base_uri' => $baseUrl . '/rest/api/',
         'handler'  => $stack,
         'debug'    => true
     ]
@@ -75,63 +75,69 @@ $client = new Client(
  * Our sample is not the best way to do it, but it's just for the demo.
  */
 
-$url = new Uri(@$_SERVER['REQUEST_URI']);
-switch ($url->getPath()) {
-    /**
-     * Our sample descriptor is available at http://atlassian-connect.dev/descriptor.json
-     *
-     * This is the bare minimal descriptor to be defined.
-     *
-     * You can validate your descriptor
-     * @see https://atlassian-connect-validator.herokuapp.com/validate
-     */
-    case '/descriptor.json':
-        echo json_encode([
-            'authentication' => [
-              'type' => 'jwt'
-            ],
-            'baseUrl'   => 'http://atlassian-connect.dev/',
-            'scopes'   => [
-                'read'
-            ],
-            'key'       => 'ourKey',
-            'lifecycle' => [
-                'installed' => '/installed',
-                'enabled'   => '/enabled'
-            ],
-        ]);
-        break;
+
+$app = new Application();
 
 
-    /**
-     * When we install our add-on into any atlassian app, they will contact us at the URL we define in the 'installed' lifecycle.
-     * They will give us a payload containing the sharedSecret we'll need to use to sign our request.
-     * For the demo we just save the content to a file.
-     */
-    case '/installed':
-        file_put_contents('payload.json', file_get_contents('php://input'));
+/**
+ * Our sample descriptor is available at http://atlassian-connect.dev/descriptor.json
+ *
+ * This is the bare minimal descriptor to be defined.
+ *
+ * You can validate your descriptor
+ * @see https://atlassian-connect-validator.herokuapp.com/validate
+ */
+$app->get('/descriptor.json', function () {
+    return json_encode([
+        'authentication' => [
+            'type' => 'jwt'
+        ],
+        'baseUrl'        => 'http://atlassian-connect.dev/',
+        'scopes'         => [
+            'read'
+        ],
+        'key'            => 'ourKey',
+        'lifecycle'      => [
+            'installed' => '/installed',
+            'enabled'   => '/enabled'
+        ],
+    ]);
+});
 
-        /**
-         * Be sure to send a 200 OK response, or the app will tell you that your plugin can't be installed.
-         */
-        http_response_code(200);
-        echo 'Whatever';
-        break;
+/**
+ * When we install our add-on into any atlassian app, they will contact us at the URL we define in the 'installed' lifecycle.
+ * They will give us a payload containing the sharedSecret we'll need to use to sign our request.
+ * For the demo we just save the content to a file.
+ */
+$app->post('/installed', function (Request $request) {
+
+    $payload = $request->getContent();
+    file_put_contents('payload.json', $payload);
 
     /**
-     * Even if the documentation tell's you the only needed webhook is the installed one,
-     * they won't let you enable the add-on unless you define the route to you 'enabled' webhook.
+     * Be sure to send a 200 OK response, or the app will tell you that your plugin can't be installed.
      */
-    case '/enabled':
-        http_response_code(200);
-        echo 'Whatever';
-        break;
+    return new \Symfony\Component\HttpFoundation\Response('OK', 200);
+});
 
 
-    default:
-        // When no action is given, just run test code.
-        $response = $client->get('space');
+/**
+ * Even if the documentation tell's you the only needed webhook is the installed one,
+ * they won't let you enable the add-on unless you define the route to you 'enabled' webhook.
+ */
+$app->post('/enabled', function () {
+    /**
+     * Be sure to send a 200 OK response, or the app will tell you that your plugin can't be enabled.
+     */
+    return new \Symfony\Component\HttpFoundation\Response('OK', 200);
+});
 
-        var_dump($response->getBody()->getContents());
-        break;
-};
+//Catch all route to run our test code
+$app->match('{url}', function ($url) use ($client) {
+    $response = $client->get('space');
+
+    var_dump($response->getBody()->getContents());
+})->assert('url', '.+');
+
+
+$app->run();

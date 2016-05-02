@@ -20,4 +20,25 @@ See the index.php at root of this repository.
 
 ## Real life testing
 
-The Atlassian Connect product you try to connect to will try to contact you, so if you want to try to connect against a real life application you will need to use some tool like [ngrok](https://ngrok.com/docs#expose). Take note that we haven't tested this solution yet.
+Use docker-compose:
+
+```bash
+$ docker-compose up -d
+```
+
+
+### Use host names instead of ports
+
+If you've launched the environment you already have a proxy running to redirect atlassian-confluence.dev and atlassian-connect.dev to the correct containers.
+You just have to put both domains to your host file or use a solution like [dnsmasq on OSX](https://passingcuriosity.com/2013/dnsmasq-dev-osx/), but be sure to redirect to your docker-machine IP.
+
+To find your docker machine ip use:
+
+```bash
+$ docker-machine ip [machine-name]
+```
+
+
+### Proxy Timeout
+
+We've setup a proxy timeout of 10 minutes so we can do line by line without problems ;)
