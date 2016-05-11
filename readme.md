@@ -19,3 +19,5 @@ As you may have seen, Atlassian has a pretty complex authentication system, even
 See the index.php at root of this repository.
 
 ## Real life testing
+
+The Atlassian Connect product you try to connect to will try to contact you, so if you want to try to connect against a real life application you will need to use some tool like [ngrok](https://ngrok.com/docs#expose). Take note that we haven't tested this solution yet.
