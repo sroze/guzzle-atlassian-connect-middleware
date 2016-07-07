@@ -1,52 +1,82 @@
-confluence:
-    image: translucent/atlassian-plugin-sdk:latest
-    volumes:
-      - ./atlassian/app:/usr/src/app
-      - ./atlassian/repository:/root/.m2/repository/
-    expose:
-        - 1990
-    dns: 192.168.99.1
-    environment:
-        VIRTUAL_HOST: atlassian-confluence.dev
+version: "2"
 
-    command: atlas-run-standalone --container tomcat7x --product confluence --version 6.0.0-OD-2016.13.3-1129 --data-version 6.0.0-OD-2016.13.3-1129 --bundled-plugins com.atlassian.bundles:json-schema-validator-atlassian-bundle:1.0.4,com.atlassian.upm:atlassian-universal-plugin-manager-plugin:2.21-D20160128T024330,com.atlassian.jwt:jwt-plugin:1.5.9-0019,com.atlassian.plugins:atlassian-connect-plugin:1.1.84 --jvmargs -Datlassian.upm.on.demand=true
-    tty: yes
+services:
+    proxy:
+        image: jwilder/nginx-proxy:latest
+        ports:
+          - "80:80"
+        volumes:
+          - /var/run/docker.sock:/tmp/docker.sock:ro
+          - ./nginx-vhost.d:/etc/nginx/vhost.d:ro
+        depends_on:
+          - confluence
+          - php
+          - nginx
+        networks:
+            - proxy
+
+    confluence:
+        image: translucent/atlassian-plugin-sdk:latest
+        volumes:
+            - confluence:/usr/src/app
+            - maven:/root/.m2/repository
+        expose:
+            - "80"
+        environment:
+            VIRTUAL_HOST: atlassian-confluence.dev
+        networks:
+            proxy:
+            confluence:
+                aliases:
+                    - atlassian-confluence.dev
+        command: atlas-run-standalone --http-port 80 --server confluence.dev --container tomcat7x --product confluence --version 6.0.0-OD-2016.13.3-1129 --data-version 6.0.0-OD-2016.13.3-1129 --bundled-plugins com.atlassian.bundles:json-schema-validator-atlassian-bundle:1.0.4,com.atlassian.upm:atlassian-universal-plugin-manager-plugin:2.21-D20160128T024330,com.atlassian.jwt:jwt-plugin:1.5.9-0019,com.atlassian.plugins:atlassian-connect-plugin:1.1.84 --jvmargs -Datlassian.upm.on.demand=true
+        tty: yes
+
+    application:
+        image: debian:jessie
+        volumes:
+            - .:/var/www/atlconnect
+
+    nginx:
+        image: he8us/nginx
+        expose:
+            - "80"
+        environment:
+            VIRTUAL_HOST: atlassian-connect.dev
+            DOCUMENT_ROOT: /var/www/atlconnect
+            LOG_FILE: atlconnect
+        volumes_from:
+            - application
+        depends_on:
+            - php
+        networks:
+            proxy:
+            confluence:
+                aliases:
+                    - atlassian-connect.dev
 
 
-application:
-    image: debian:jessie
-    volumes:
-        - .:/var/www/atlconnect
+    php:
+        image: he8us/php-fpm-prod
+        expose:
+            - "9000"
+        environment:
+            APPLICATION_ENV: dev
+            TIMEZONE: "Europe/Brussels"
+        volumes_from:
+            - application
+        networks:
+            - confluence
 
-nginx:
-    image: he8us/nginx
-    ports:
-        - 80
 
-    dns: 192.168.99.1
-    environment:
-        VIRTUAL_HOST: atlassian-connect.dev
-        DOCUMENT_ROOT: /var/www/atlconnect
-        LOG_FILE: atlconnect
+networks:
+    confluence:
+        driver: bridge
+    proxy:
+        driver: bridge
 
-    links:
-        - php
-        - confluence
-
-    volumes_from:
-        - application
-
-php:
-    image: he8us/php-fpm-prod
-    expose:
-        - 9000
-
-    links:
-        - confluence
-
-    dns: 192.168.99.1
-    environment:
-        APPLICATION_ENV: dev
-        TIMEZONE: "Europe/Brussels"
-    volumes_from:
-        - application
+volumes:
+    confluence:
+        driver: local
+    maven:
+        driver: local

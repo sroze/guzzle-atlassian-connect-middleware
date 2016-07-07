@@ -19,3 +19,28 @@ As you may have seen, Atlassian has a pretty complex authentication system, even
 See the index.php at root of this repository.
 
 ## Real life testing
+
+The Atlassian Product you want to authenticate to needs to contact your application using some form of webhooks, so we created the most basic application we could do to show you how it can be accomplished.
+
+Use docker-compose:
+
+```bash
+$ docker-compose up -d
+```
+
+
+### Use host names instead of ports
+
+If you've launched the environment you already have a proxy running to redirect atlassian-confluence.dev and atlassian-connect.dev to the correct containers.
+You just have to put both domains to your host file or use a solution like [dnsmasq on OSX](https://passingcuriosity.com/2013/dnsmasq-dev-osx/), but be sure to redirect to your docker-machine IP.
+
+To find your docker machine ip use:
+
+```bash
+$ docker-machine ip [machine-name]
+```
+
+
+### Proxy Timeout
+
+We've setup a proxy timeout of 10 minutes so we can do line by line without problems ;)
