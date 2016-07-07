@@ -1,6 +1,8 @@
 adlogix/guzzle-atlassian-connect-middleware
 ===========================================
 
+![build](https://travis-ci.org/adlogix/guzzle-atlassian-connect-middleware.svg?branch=develop)
+
 __The purpose of this middleware is to implement Atlassian Connect authentication as a Guzzle middleware. So you should read the [Atlassian Connect documentation](https://developer.atlassian.com/static/connect/docs/latest/index.html) to understand terms used in this library__
 
 ## tl;dr;
