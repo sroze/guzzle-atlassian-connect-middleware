@@ -20,6 +20,8 @@ See the index.php at root of this repository.
 
 ## Real life testing
 
+The Atlassian Product you want to authenticate to needs to contact your application using some form of webhooks, so we created the most basic application we could do to show you how it can be accomplished.
+
 Use docker-compose:
 
 ```bash
