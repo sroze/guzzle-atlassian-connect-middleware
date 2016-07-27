@@ -45,7 +45,7 @@ $ docker-machine ip [machine-name]
 
 ### Get your development instance
 
-Atlassian changed the way to work on Confluence/Jira, now in order to create your plugin, you have to get a [Developer Account]() and create your own instance. All the steps to create your environment are defined on the [documentation page]().
+Atlassian changed the way to work on Confluence/Jira, now in order to create your plugin, you have to get a [Developer Account](http://go.atlassian.com/cloud-dev) and create your own instance. All the steps to create your environment are defined on the [documentation page](https://developer.atlassian.com/static/connect/docs/latest/guides/development-setup.html).
  
 Once you have access to your own Atlassian Cloud instance and that you put it in developer mode, we can continue and let the instance contact us.
 
