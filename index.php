@@ -13,6 +13,7 @@ use Adlogix\GuzzleAtlassianConnect\Security\QueryParamAuthentication;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * See the 'installed' webhook on how to recover this payload.
@@ -87,12 +88,25 @@ $app = new Application();
  * You can validate your descriptor
  * @see https://atlassian-connect-validator.herokuapp.com/validate
  */
-$app->get('/descriptor.json', function () {
+$app->get('/descriptor.json', function (Request $request) {
+
+    /*
+     * We have to construct the correct URL in order to confluence be able to contact us
+     * And the scheme MUST be https in order to confluence accept it.
+     */
+    $host = $request->getHttpHost();
+    $scheme = $request->getScheme();
+
+    if (preg_match('/\.ngrok\.io/', $host)) {
+        $scheme = 'https';
+    }
+
+
     return json_encode([
         'authentication' => [
             'type' => 'jwt'
         ],
-        'baseUrl'        => 'http://atlassian-connect.dev/',
+        'baseUrl'        => $scheme . '://' . $host,
         'scopes'         => [
             'read'
         ],
