@@ -47,11 +47,11 @@ $ docker-machine ip [machine-name]
 
 Atlassian changed the way to work on Confluence/Jira, now in order to create your plugin, you have to get a [Developer Account](http://go.atlassian.com/cloud-dev) and create your own instance. All the steps to create your environment are defined on the [documentation page](https://developer.atlassian.com/static/connect/docs/latest/guides/development-setup.html).
  
-Once you have access to your own Atlassian Cloud instance and that you put it in developer mode, we can continue and let the instance contact us.
+Once you have access to your own Atlassian Cloud instance and you put it in developer mode, we can continue and let the instance contact us.
 
 ### Exposing our local app to the world
 
-The Atlassian app we trying to authenticate must post some information to us, so we need to expose our app on the internet. That's the reason we have a ngrok container running. ngrok is an application which will create a tunnel between our environment and their servers, letting us to be accessed from everywhere.
+The Atlassian app we trying to authenticate must post some information to us, so we need to expose our app on the internet. That's the reason we have a [ngrok](https://ngrok.com/) container running. ngrok is an application which will create a tunnel between our environment and their servers, letting us to be accessed from everywhere.
   
 You should now have a ngrok container running at [ngrok.dev](http://ngrok.dev). When you connect you should see the tunnel url and, if you open it, all the tunnel trafic.
 
