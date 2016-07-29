@@ -9,28 +9,27 @@ services:
           - /var/run/docker.sock:/tmp/docker.sock:ro
           - ./nginx-vhost.d:/etc/nginx/vhost.d:ro
         depends_on:
-          - confluence
-          - php
-          - nginx
+            - ngrok
+            - php
+            - nginx
         networks:
             - proxy
 
-    confluence:
-        image: translucent/atlassian-plugin-sdk:latest
+    ngrok:
+        image: wernight/ngrok
         volumes:
-            - confluence:/usr/src/app
-            - maven:/root/.m2/repository
-        expose:
-            - "80"
-        environment:
-            VIRTUAL_HOST: atlassian-confluence.dev
+          - .:/var/www
         networks:
-            proxy:
-            confluence:
-                aliases:
-                    - atlassian-confluence.dev
-        command: atlas-run-standalone --http-port 80 --server confluence.dev --container tomcat7x --product confluence --version 6.0.0-OD-2016.13.3-1129 --data-version 6.0.0-OD-2016.13.3-1129 --bundled-plugins com.atlassian.bundles:json-schema-validator-atlassian-bundle:1.0.4,com.atlassian.upm:atlassian-universal-plugin-manager-plugin:2.21-D20160128T024330,com.atlassian.jwt:jwt-plugin:1.5.9-0019,com.atlassian.plugins:atlassian-connect-plugin:1.1.84 --jvmargs -Datlassian.upm.on.demand=true
-        tty: yes
+            - proxy
+        expose:
+            - '4040'
+        depends_on:
+            - nginx
+
+        environment:
+            VIRTUAL_HOST: ngrok.dev
+
+        command: ngrok start --config /var/www/ngrok.yml --all
 
     application:
         image: debian:jessie
@@ -50,14 +49,12 @@ services:
         depends_on:
             - php
         networks:
-            proxy:
-            confluence:
-                aliases:
-                    - atlassian-connect.dev
+            - proxy
+            - backend
 
 
     php:
-        image: he8us/php-fpm-prod
+        image: he8us/php-fpm-dev
         expose:
             - "9000"
         environment:
@@ -66,17 +63,13 @@ services:
         volumes_from:
             - application
         networks:
-            - confluence
+            - backend
+
+
 
 
 networks:
-    confluence:
-        driver: bridge
     proxy:
         driver: bridge
-
-volumes:
-    confluence:
-        driver: local
-    maven:
-        driver: local
+    backend:
+        driver: bridge
