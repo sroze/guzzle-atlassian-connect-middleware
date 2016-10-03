@@ -54,7 +54,7 @@ services:
 
 
     php:
-        image: he8us/php-fpm-dev
+        image: he8us/php-fpm-dev:7.0
         expose:
             - "9000"
         environment:
