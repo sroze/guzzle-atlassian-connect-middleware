@@ -45,7 +45,7 @@ if (file_exists('payload.json')) {
  * so be sure you received the 'enabled' webhook call before trying to contact it.
  */
 $middleware = new ConnectMiddleware(
-    new QueryParamAuthentication('ourKey', $sharedSecret),
+    new QueryParamAuthentication('eu.adlogix.atlassian-connect', $sharedSecret),
     $baseUrl
 );
 
@@ -61,13 +61,20 @@ $stack->push($middleware);
  */
 $client = new Client(
     [
-        'base_uri' => $baseUrl.'/rest/api/',
+        'base_uri' => $baseUrl.'/',
         'handler'  => $stack,
         'debug'    => true
     ]
 );
 
 
-$response = $client->get('content/1146912');
+$response = $client->get('rest/api/space');
+var_dump($response->getBody()->getContents());
 
+echo "\r\n\r\n=======================================================================================================" .
+        "==============================================================================================\r\n\r\n";
+
+$response = $client->get(
+    'download/attachments/197288/Seller%20Admin%20logo%20stats.png?version=1&modificationDate=1459423644007&api=v2'
+);
 var_dump($response->getBody()->getContents());

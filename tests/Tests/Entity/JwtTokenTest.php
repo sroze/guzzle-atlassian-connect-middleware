@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Adlogix\Confluence\Client\Tests\Entity;
+namespace Adlogix\GuzzleAtlassianConnect\Tests\Entity;
 
 use Adlogix\GuzzleAtlassianConnect\Entity\JwtToken;
 use Adlogix\GuzzleAtlassianConnect\Tests\TestCase;
@@ -40,7 +40,9 @@ class JwtTokenTest extends TestCase
 
 
         $this->assertEquals(
-            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInFzaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMifQ.eneZNcg42dCVpB4krbqktMByMPXv1QYbiV-M50Q212A',
+            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInF' .
+                'zaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMifQ.eneZ' .
+                'Ncg42dCVpB4krbqktMByMPXv1QYbiV-M50Q212A',
             $token->sign()
         );
     }
@@ -88,7 +90,7 @@ class JwtTokenTest extends TestCase
                 'iss'     => $tokenValues['issuer'],
                 'iat'     => $tokenValues['issuedAtTime'],
                 'exp'     => $tokenValues['issuedAtTime'] + $tokenValues['validity'],
-                'qsh'     => '9e877a61dc37c91bcca16763456003cdd9007cd3ff39afadc6eca8656215ad13',
+                'qsh'     => '909144220b8eb4799623bdbb198a01485d4a7ad975d261cdfe14dafe021748c3',
                 'sub'     => $tokenValues['subject'],
                 'context' => $tokenValues['context']
             ],
@@ -96,13 +98,21 @@ class JwtTokenTest extends TestCase
         );
 
         $this->assertEquals(
-            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInFzaCI6IjllODc3YTYxZGMzN2M5MWJjY2ExNjc2MzQ1NjAwM2NkZDkwMDdjZDNmZjM5YWZhZGM2ZWNhODY1NjIxNWFkMTMiLCJjb250ZXh0Ijp7InVzZXIiOnsidXNlcktleSI6IkJhdG1hbiIsInVzZXJuYW1lIjoiYnJ1Y2V3YXluZSIsImRpc3BsYXlOYW1lIjoiQnJ1Y2llIn19LCJzdWIiOiJ0aGVTdWJqZWN0IiwiYXVkIjoiQXVkaWVuY2UifQ.JWA7Ry27ZGt5mACuI0eOXy_Cx-ccmNXQa1ckRNZiT8Y',
+            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInF' .
+                'zaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMiLCJjb25' .
+                '0ZXh0Ijp7InVzZXIiOnsidXNlcktleSI6IkJhdG1hbiIsInVzZXJuYW1lIjoiYnJ1Y2V3YXluZSIsImRpc3BsYXlOYW1lIjoiQnJ' .
+                '1Y2llIn19LCJzdWIiOiJ0aGVTdWJqZWN0IiwiYXVkIjoiQXVkaWVuY2UifQ.VfvMt5u4yFNdF2j_MK1EB1A663v9NHuDxylnb' .
+                'ee0k1c',
             $token->sign()
         );
 
         $this->assertEquals(
-            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInFzaCI6IjllODc3YTYxZGMzN2M5MWJjY2ExNjc2MzQ1NjAwM2NkZDkwMDdjZDNmZjM5YWZhZGM2ZWNhODY1NjIxNWFkMTMiLCJjb250ZXh0Ijp7InVzZXIiOnsidXNlcktleSI6IkJhdG1hbiIsInVzZXJuYW1lIjoiYnJ1Y2V3YXluZSIsImRpc3BsYXlOYW1lIjoiQnJ1Y2llIn19LCJzdWIiOiJ0aGVTdWJqZWN0IiwiYXVkIjoiQXVkaWVuY2UifQ.JWA7Ry27ZGt5mACuI0eOXy_Cx-ccmNXQa1ckRNZiT8Y',
-            $token
+            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInF' .
+            'zaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMiLCJjb25' .
+            '0ZXh0Ijp7InVzZXIiOnsidXNlcktleSI6IkJhdG1hbiIsInVzZXJuYW1lIjoiYnJ1Y2V3YXluZSIsImRpc3BsYXlOYW1lIjoiQnJ' .
+            '1Y2llIn19LCJzdWIiOiJ0aGVTdWJqZWN0IiwiYXVkIjoiQXVkaWVuY2UifQ.VfvMt5u4yFNdF2j_MK1EB1A663v9NHuDxylnb' .
+            'ee0k1c',
+            $token.''
         );
 
     }
@@ -137,19 +147,23 @@ class JwtTokenTest extends TestCase
                 'iss' => $tokenValues['issuer'],
                 'iat' => $tokenValues['issuedAtTime'],
                 'exp' => $tokenValues['issuedAtTime'] + $tokenValues['validity'],
-                'qsh' => '9e877a61dc37c91bcca16763456003cdd9007cd3ff39afadc6eca8656215ad13',
+                'qsh' => '909144220b8eb4799623bdbb198a01485d4a7ad975d261cdfe14dafe021748c3',
             ],
             $token->sign(false)
         );
 
         $this->assertEquals(
-            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInFzaCI6IjllODc3YTYxZGMzN2M5MWJjY2ExNjc2MzQ1NjAwM2NkZDkwMDdjZDNmZjM5YWZhZGM2ZWNhODY1NjIxNWFkMTMifQ.rF3mreI96dnq67QbBvZJNA3B9WSpYx-Xi_nuWPQikWE',
+            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInF' .
+                'zaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMifQ.eneZ' .
+                'Ncg42dCVpB4krbqktMByMPXv1QYbiV-M50Q212A',
             $token->sign()
         );
 
         $this->assertEquals(
-            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInFzaCI6IjllODc3YTYxZGMzN2M5MWJjY2ExNjc2MzQ1NjAwM2NkZDkwMDdjZDNmZjM5YWZhZGM2ZWNhODY1NjIxNWFkMTMifQ.rF3mreI96dnq67QbBvZJNA3B9WSpYx-Xi_nuWPQikWE',
-            $token
+            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInF' .
+            'zaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMifQ.eneZ' .
+            'Ncg42dCVpB4krbqktMByMPXv1QYbiV-M50Q212A',
+            $token.''
         );
 
 
