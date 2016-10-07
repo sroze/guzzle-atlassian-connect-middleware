@@ -47,7 +47,7 @@ if (file_exists('payload.json')) {
  * so be sure you received the 'enabled' webhook call before trying to contact it.
  */
 $middleware = new ConnectMiddleware(
-    new QueryParamAuthentication('ourKey', $sharedSecret),
+    new QueryParamAuthentication('eu.adlogix.atlassian-connect', $sharedSecret),
     $baseUrl
 );
 

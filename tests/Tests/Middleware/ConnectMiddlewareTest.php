@@ -53,8 +53,8 @@ class ConnectMiddlewareTest extends TestCase
         $this->uri = new Uri('http:://appurl.com/application/some/path?expand=body.view,children.page.body.view&title=Seller+-+User+Tutorials');
         $this->appContext = 'http:://appurl.com/application';
 
-        $this->auth = $this->getMock(AuthenticationInterface::class);
-        $this->request = $this->getMock(RequestInterface::class);
+        $this->auth = $this->createMock(AuthenticationInterface::class);
+        $this->request = $this->createMock(RequestInterface::class);
         
 
         $this->request->expects($this->once())

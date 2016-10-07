@@ -27,8 +27,9 @@ class Qsh
     {
         $method = strtoupper($method);
 
+
         $parts = parse_url($url);
-        $path = $parts['path'];
+        $path = self::getCorrectPath($parts['path']);
 
         $canonicalQuery = '';
         if (array_key_exists('query', $parts)) {
@@ -73,5 +74,23 @@ class Qsh
         }
 
         return $query;
+    }
+
+    /**
+     *
+     * @param string $path
+     *
+     * @return mixed
+     */
+    private static function getCorrectPath($path)
+    {
+
+        $path = str_replace(' ', '%20', $path);
+
+        if ('/' !== $path[0]) {
+            $path = '/'.$path;
+        }
+
+        return $path;
     }
 }

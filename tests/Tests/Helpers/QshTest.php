@@ -133,6 +133,16 @@ class QshTest extends TestCase
                 'c178717f4c46c0caa0ef6a00df4d13b54d00971e10420b6dd9f0487214adc04e',
                 'GET',
                 '/some/path?parameter=title !<>~ "win*"'
+            ],
+            [
+                '2a0fa49d89b83efd5f5b154b9b8c50bfd0df8c4305d7d38b58093cb59143c20d',
+                'GET',
+                '/download/attachments/197288/Seller%20Admin%20logo%20stats.png?version=1&modificationDate=1459423644007&api=v2'
+            ],
+            [
+                'c8483d04d4d62762cf010a238bc611e55970256bf528162d23a4999abc3553b2',
+                'GET',
+                'rest/api/space'
             ]
         ];
     }
