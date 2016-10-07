@@ -41,7 +41,12 @@ class HeaderAuthenticationTest extends TestCase
         $token->setQueryString('GET', '/some/path');
 
         $this->assertEquals(
-            ['Authorization' => 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZXkiLCJpYXQiOjEyMzQ1NiwiZXhwIjoyNDY5MTMsInFzaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMifQ.Uy8F4KCV4MQ1U6biaWt8EHufYmmEuKKbYX406SoAgCA'],
+            [
+                'Authorization' => 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZXkiLCJpYXQiOjEyMzQ1NiwiZX' .
+                                        'hwIjoyNDY5MTMsInFzaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdh' .
+                                        'ZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMifQ.Uy8F4KCV4MQ1U6biaWt8EHufYmmEuKKbYX4' .
+                                        '06SoAgCA'
+            ],
             $headerAuthentication->getHeaders()
         );
 
@@ -64,7 +69,12 @@ class HeaderAuthenticationTest extends TestCase
         $token->setValidityDuration(123457);
 
         $this->assertEquals(
-            ['Authorization' => 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZXkiLCJpYXQiOjEyMzQ1NiwiZXhwIjoyNDY5MTMsInFzaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMifQ.Uy8F4KCV4MQ1U6biaWt8EHufYmmEuKKbYX406SoAgCA'],
+            [
+                'Authorization' => 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrZXkiLCJpYXQiOjEyMzQ1NiwiZX' .
+                                        'hwIjoyNDY5MTMsInFzaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdh' .
+                                        'ZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMifQ.Uy8F4KCV4MQ1U6biaWt8EHufYmmEuKKbYX4' .
+                                        '06SoAgCA'
+            ],
             $headerAuthentication->getHeaders()
         );
 

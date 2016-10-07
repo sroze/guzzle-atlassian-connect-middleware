@@ -71,7 +71,8 @@ $client = new Client(
 
 
 /**
- * Since [name-your-app] needs to reach our application to post some information, like the sharedSecret, we have to define some routes.
+ * Since [name-your-app] needs to reach our application to post some information, like the sharedSecret, we have to
+ * define some routes.
  * At time of writing Confluence refuses to contact us if the route contains .php so we need to prettify our URLS.
  * Our sample is not the best way to do it, but it's just for the demo.
  */
@@ -119,7 +120,8 @@ $app->get('/descriptor.json', function (Request $request) {
 });
 
 /**
- * When we install our add-on into any atlassian app, they will contact us at the URL we define in the 'installed' lifecycle.
+ * When we install our add-on into any atlassian app, they will contact us at the URL we define in the 'installed'
+ * lifecycle.
  * They will give us a payload containing the sharedSecret we'll need to use to sign our request.
  * For the demo we just save the content to a file.
  */
@@ -147,7 +149,7 @@ $app->post('/enabled', function () {
 });
 
 //Catch all route to run our test code
-$app->match('{url}', function ($url) use ($client) {
+$app->match('{url}', function () use ($client) {
     $response = $client->get('space');
 
     var_dump($response->getBody()->getContents());

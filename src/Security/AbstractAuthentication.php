@@ -62,6 +62,7 @@ abstract class AbstractAuthentication implements AuthenticationInterface
      */
     public function setQueryString($method, $url)
     {
-        return $this->token->setQueryString($method, $url);
+        $this->token->setQueryString($method, $url);
+        return $this;
     }
 }

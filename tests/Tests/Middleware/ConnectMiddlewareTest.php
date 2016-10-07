@@ -8,13 +8,11 @@
 
 namespace Adlogix\GuzzleAtlassianConnect\Tests\Middleware;
 
-use Adlogix\GuzzleAtlassianConnect\Entity\JwtToken;
 use Adlogix\GuzzleAtlassianConnect\Middleware\ConnectMiddleware;
 use Adlogix\GuzzleAtlassianConnect\Security\AuthenticationInterface;
 use Adlogix\GuzzleAtlassianConnect\Tests\TestCase;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\UriInterface;
 
 /**
  * Class ConnectMiddlewareTest
@@ -50,17 +48,19 @@ class ConnectMiddlewareTest extends TestCase
     public function setUp()
     {
 
-        $this->uri = new Uri('http:://appurl.com/application/some/path?expand=body.view,children.page.body.view&title=Seller+-+User+Tutorials');
+        $this->uri = new Uri(
+            'http:://appurl.com/application/some/path' .
+                '?expand=body.view,children.page.body.view&title=Seller+-+User+Tutorials'
+        );
         $this->appContext = 'http:://appurl.com/application';
 
         $this->auth = $this->createMock(AuthenticationInterface::class);
         $this->request = $this->createMock(RequestInterface::class);
-        
+
 
         $this->request->expects($this->once())
             ->method('getMethod')
             ->willReturn('get');
-
 
 
         $this->auth->expects($this->once())
@@ -79,7 +79,7 @@ class ConnectMiddlewareTest extends TestCase
             ->method('getHeaders')
             ->willReturn([
                 'Authorization' => "XXXX",
-                'OtherOption' => 'XXXX'
+                'OtherOption'   => 'XXXX'
             ]);
 
         $this->auth->expects($this->once())
@@ -125,7 +125,7 @@ class ConnectMiddlewareTest extends TestCase
             ->expects($this->once())
             ->method('getQueryParameters')
             ->willReturn([
-                'jwt' => 'YYYY',
+                'jwt'        => 'YYYY',
                 'otherParam' => 'YYYY'
             ]);
 
@@ -153,5 +153,4 @@ class ConnectMiddlewareTest extends TestCase
 
         $callable($this->request, ['Hello World']);
     }
-
 }

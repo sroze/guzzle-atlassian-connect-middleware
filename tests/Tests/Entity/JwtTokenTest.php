@@ -40,7 +40,9 @@ class JwtTokenTest extends TestCase
 
 
         $this->assertEquals(
-            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInFzaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMifQ.eneZNcg42dCVpB4krbqktMByMPXv1QYbiV-M50Q212A',
+            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInF' .
+                'zaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMifQ.eneZ' .
+                'Ncg42dCVpB4krbqktMByMPXv1QYbiV-M50Q212A',
             $token->sign()
         );
     }
@@ -96,12 +98,20 @@ class JwtTokenTest extends TestCase
         );
 
         $this->assertEquals(
-            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInFzaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMiLCJjb250ZXh0Ijp7InVzZXIiOnsidXNlcktleSI6IkJhdG1hbiIsInVzZXJuYW1lIjoiYnJ1Y2V3YXluZSIsImRpc3BsYXlOYW1lIjoiQnJ1Y2llIn19LCJzdWIiOiJ0aGVTdWJqZWN0IiwiYXVkIjoiQXVkaWVuY2UifQ.VfvMt5u4yFNdF2j_MK1EB1A663v9NHuDxylnbee0k1c',
+            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInF' .
+                'zaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMiLCJjb25' .
+                '0ZXh0Ijp7InVzZXIiOnsidXNlcktleSI6IkJhdG1hbiIsInVzZXJuYW1lIjoiYnJ1Y2V3YXluZSIsImRpc3BsYXlOYW1lIjoiQnJ' .
+                '1Y2llIn19LCJzdWIiOiJ0aGVTdWJqZWN0IiwiYXVkIjoiQXVkaWVuY2UifQ.VfvMt5u4yFNdF2j_MK1EB1A663v9NHuDxylnb' .
+                'ee0k1c',
             $token->sign()
         );
 
         $this->assertEquals(
-            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInFzaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMiLCJjb250ZXh0Ijp7InVzZXIiOnsidXNlcktleSI6IkJhdG1hbiIsInVzZXJuYW1lIjoiYnJ1Y2V3YXluZSIsImRpc3BsYXlOYW1lIjoiQnJ1Y2llIn19LCJzdWIiOiJ0aGVTdWJqZWN0IiwiYXVkIjoiQXVkaWVuY2UifQ.VfvMt5u4yFNdF2j_MK1EB1A663v9NHuDxylnbee0k1c',
+            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInF' .
+            'zaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMiLCJjb25' .
+            '0ZXh0Ijp7InVzZXIiOnsidXNlcktleSI6IkJhdG1hbiIsInVzZXJuYW1lIjoiYnJ1Y2V3YXluZSIsImRpc3BsYXlOYW1lIjoiQnJ' .
+            '1Y2llIn19LCJzdWIiOiJ0aGVTdWJqZWN0IiwiYXVkIjoiQXVkaWVuY2UifQ.VfvMt5u4yFNdF2j_MK1EB1A663v9NHuDxylnb' .
+            'ee0k1c',
             $token.''
         );
 
@@ -143,12 +153,16 @@ class JwtTokenTest extends TestCase
         );
 
         $this->assertEquals(
-            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInFzaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMifQ.eneZNcg42dCVpB4krbqktMByMPXv1QYbiV-M50Q212A',
+            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInF' .
+                'zaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMifQ.eneZ' .
+                'Ncg42dCVpB4krbqktMByMPXv1QYbiV-M50Q212A',
             $token->sign()
         );
 
         $this->assertEquals(
-            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInFzaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMifQ.eneZNcg42dCVpB4krbqktMByMPXv1QYbiV-M50Q212A',
+            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInF' .
+            'zaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMifQ.eneZ' .
+            'Ncg42dCVpB4krbqktMByMPXv1QYbiV-M50Q212A',
             $token.''
         );
 

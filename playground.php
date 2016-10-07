@@ -71,7 +71,10 @@ $client = new Client(
 $response = $client->get('rest/api/space');
 var_dump($response->getBody()->getContents());
 
-echo "\r\n\r\n=====================================================================================================================================================================================================\r\n\r\n";
+echo "\r\n\r\n=======================================================================================================" .
+        "==============================================================================================\r\n\r\n";
 
-$response = $client->get('download/attachments/197288/Seller%20Admin%20logo%20stats.png?version=1&modificationDate=1459423644007&api=v2');
+$response = $client->get(
+    'download/attachments/197288/Seller%20Admin%20logo%20stats.png?version=1&modificationDate=1459423644007&api=v2'
+);
 var_dump($response->getBody()->getContents());

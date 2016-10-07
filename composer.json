@@ -1,7 +1,7 @@
 {
     "name": "adlogix/guzzle-atlassian-connect-middleware",
     "description": "An Atlassian Connect authentication middleware for Guzzle",
-    "version": "0.1.2",
+    "version": "1.0.0",
     "license": "MIT",
     "keywords": [
         "Atlassian",
