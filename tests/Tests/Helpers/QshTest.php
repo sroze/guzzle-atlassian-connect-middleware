@@ -135,7 +135,7 @@ class QshTest extends TestCase
                 '/some/path?parameter=title !<>~ "win*"'
             ],
             [
-                '2a0fa49d89b83efd5f5b154b9b8c50bfd0df8c4305d7d38b58093cb59143c20d',
+                '327c42ca2d3f171bc75cf419bccfd061569dfc635c5c91618b3b69b951c511e9',
                 'GET',
                 '/download/attachments/197288/Seller%20Admin%20logo%20stats.png?api=v2'
             ],
