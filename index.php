@@ -9,11 +9,13 @@
 require_once 'vendor/autoload.php';
 
 use Adlogix\GuzzleAtlassianConnect\Middleware\ConnectMiddleware;
-use Adlogix\GuzzleAtlassianConnect\Security\QueryParamAuthentication;
+use Adlogix\GuzzleAtlassianConnect\Security\HeaderAuthentication;
+use Adlogix\GuzzleAtlassianConnect\Tests\Helpers\Payload;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * See the 'installed' webhook on how to recover this payload.
@@ -21,13 +23,8 @@ use Symfony\Component\HttpFoundation\Request;
  * The sharedSecret is given by the application we installed the add-on to,
  * this is needed to sign our request and to validate the requests from the application.
  */
-$sharedSecret = '';
-$baseUrl = '';
-if (file_exists('payload.json')) {
-    $payload = json_decode(file_get_contents('payload.json'));
-    $sharedSecret = $payload->sharedSecret;
-    $baseUrl = $payload->baseUrl;
-}
+$payload = new Payload('payload.json');
+
 
 /**
  * Here we create the middleware;
@@ -47,8 +44,8 @@ if (file_exists('payload.json')) {
  * so be sure you received the 'enabled' webhook call before trying to contact it.
  */
 $middleware = new ConnectMiddleware(
-    new QueryParamAuthentication('eu.adlogix.atlassian-connect', $sharedSecret),
-    $baseUrl
+    new HeaderAuthentication('eu.adlogix.confluence-client', $payload->getSharedSecret()),
+    $payload->getBaseUrl()
 );
 
 
@@ -63,9 +60,9 @@ $stack->push($middleware);
  */
 $client = new Client(
     [
-        'base_uri' => $baseUrl . '/rest/api/',
+        'base_uri' => $payload->getBaseUrl(),
         'handler'  => $stack,
-        'debug'    => true
+        'debug'    => false
     ]
 );
 
@@ -79,6 +76,9 @@ $client = new Client(
 
 
 $app = new Application();
+$app->register(new Silex\Provider\TwigServiceProvider(), [
+    'twig.path' => __DIR__ . '/views',
+]);
 
 
 /**
@@ -133,7 +133,7 @@ $app->post('/installed', function (Request $request) {
     /**
      * Be sure to send a 200 OK response, or the app will tell you that your plugin can't be installed.
      */
-    return new \Symfony\Component\HttpFoundation\Response('OK', 200);
+    return new Response('OK', 200);
 });
 
 
@@ -145,14 +145,22 @@ $app->post('/enabled', function () {
     /**
      * Be sure to send a 200 OK response, or the app will tell you that your plugin can't be enabled.
      */
-    return new \Symfony\Component\HttpFoundation\Response('OK', 200);
+    return new Response('OK', 200);
 });
 
 //Catch all route to run our test code
-$app->match('{url}', function () use ($client) {
-    $response = $client->get('space');
+$app->get('/', function (Application $app) {
+    return $app['twig']->render("index.html.twig");
+});
 
-    var_dump($response->getBody()->getContents());
+
+$app->get('{url}', function ($url) use ($client) {
+    $response = $client->get($url);
+    return new Response(
+        $response->getBody()->getContents(),
+        $response->getStatusCode(),
+        $response->getHeaders()
+    );
 })->assert('url', '.+');
 
 

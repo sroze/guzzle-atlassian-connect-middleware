@@ -1,7 +1,7 @@
 {
     "name": "adlogix/guzzle-atlassian-connect-middleware",
     "description": "An Atlassian Connect authentication middleware for Guzzle",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "license": "MIT",
     "keywords": [
         "Atlassian",
@@ -37,7 +37,8 @@
     "require-dev": {
         "guzzlehttp/guzzle": "^6.2",
         "silex/silex": "^2.0",
-        "phpunit/phpunit": "^5.6"
+        "phpunit/phpunit": "^5.6",
+        "twig/twig": "^1.26"
     },
     "suggest": {
         "guzzlehttp/guzzle": "For using this library as it was created for Guzzle6. But you should be able to use it with any PSR-7 HTTP Client"

@@ -95,13 +95,19 @@ class JwtToken
     }
 
     /**
-     * @param bool $encode
-     *
      * @return string
      */
-    public function sign($encode = true)
+    public function sign()
     {
+        $payload = $this->buildPayload();
+        return JWT::encode($payload, $this->secret);
+    }
 
+    /**
+     * @return array
+     */
+    public function buildPayload()
+    {
         if (null == $this->queryStringHash) {
             throw new \LogicException('You should provide a Query String before calling sign');
         }
@@ -113,22 +119,51 @@ class JwtToken
             'qsh' => $this->queryStringHash
         ];
 
+        $payload = $this->setPayloadContext($payload);
+        $payload = $this->setPayloadSubject($payload);
+
+        return $this->setPayloadAudience($payload);
+    }
+
+    /**
+     * @param $payload
+     *
+     * @return array
+     */
+    private function setPayloadContext(array $payload)
+    {
         if (null !== $this->context) {
             $payload['context'] = $this->context;
         }
+        return $payload;
+    }
 
+    /**
+     * @param $payload
+     *
+     * @return array
+     */
+    private function setPayloadSubject(array $payload)
+    {
         if (null !== $this->subject) {
             $payload['sub'] = $this->subject;
         }
 
+        return $payload;
+    }
+
+    /**
+     * @param $payload
+     *
+     * @return array
+     */
+    private function setPayloadAudience(array $payload)
+    {
         if (null !== $this->audience) {
             $payload['aud'] = $this->audience;
         }
 
-        if (!$encode) {
-            return $payload;
-        }
-        return JWT::encode($payload, $this->secret);
+        return $payload;
     }
 
     /**
@@ -175,7 +210,6 @@ class JwtToken
         $this->audience = $audience;
         return $this;
     }
-
 
     /**
      * @param object $context
