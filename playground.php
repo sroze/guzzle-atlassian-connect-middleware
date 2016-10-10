@@ -10,6 +10,7 @@ require_once 'vendor/autoload.php';
 
 use Adlogix\GuzzleAtlassianConnect\Middleware\ConnectMiddleware;
 use Adlogix\GuzzleAtlassianConnect\Security\QueryParamAuthentication;
+use Adlogix\GuzzleAtlassianConnect\Tests\Helpers\Payload;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 
@@ -19,13 +20,8 @@ use GuzzleHttp\HandlerStack;
  * The sharedSecret is given by the application we installed the add-on to,
  * this is needed to sign our request and to validate the requests from the application.
  */
-$sharedSecret = '';
-$baseUrl = '';
-if (file_exists('payload.json')) {
-    $payload = json_decode(file_get_contents('payload.json'));
-    $sharedSecret = $payload->sharedSecret;
-    $baseUrl = $payload->baseUrl;
-}
+$payload = new Payload('payload.json');
+
 
 /**
  * Here we create the middleware;
@@ -45,8 +41,8 @@ if (file_exists('payload.json')) {
  * so be sure you received the 'enabled' webhook call before trying to contact it.
  */
 $middleware = new ConnectMiddleware(
-    new QueryParamAuthentication('eu.adlogix.atlassian-connect', $sharedSecret),
-    $baseUrl
+    new QueryParamAuthentication('eu.adlogix.confluence-client', $payload->getSharedSecret()),
+    $payload->getBaseUrl()
 );
 
 
@@ -61,7 +57,7 @@ $stack->push($middleware);
  */
 $client = new Client(
     [
-        'base_uri' => $baseUrl.'/',
+        'base_uri' => $payload->getBaseUrl(),
         'handler'  => $stack,
         'debug'    => true
     ]
@@ -69,12 +65,12 @@ $client = new Client(
 
 
 $response = $client->get('rest/api/space');
-var_dump($response->getBody()->getContents());
+echo $response->getBody()->getContents();
 
 echo "\r\n\r\n=======================================================================================================" .
-        "==============================================================================================\r\n\r\n";
+    "==============================================================================================\r\n\r\n";
 
 $response = $client->get(
     'download/attachments/197288/Seller%20Admin%20logo%20stats.png?version=1&modificationDate=1459423644007&api=v2'
 );
-var_dump($response->getBody()->getContents());
+echo $response->getBody()->getContents();

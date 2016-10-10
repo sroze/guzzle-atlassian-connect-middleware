@@ -43,40 +43,6 @@ class Qsh
     }
 
     /**
-     * @param string $query
-     *
-     * @return string
-     */
-    private static function getCanonicalQuery($query = '')
-    {
-        if (!empty($query)) {
-            $queryParts = explode('&', $query);
-            $query = '';
-            $queryArray = [];
-
-            foreach ($queryParts as $queryPart) {
-                $pieces = explode('=', $queryPart, 2);
-
-                $key = rawurlencode($pieces[0]);
-                $value = rawurlencode($pieces[1]);
-
-                $queryArray[$key][] = $value;
-            }
-
-            ksort($queryArray);
-
-            foreach ($queryArray as $key => $pieceOfQuery) {
-                $pieceOfQuery = implode(',', $pieceOfQuery);
-                $query .= $key . '=' . $pieceOfQuery . '&';
-            }
-
-            $query = rtrim($query, '&');
-        }
-
-        return $query;
-    }
-
-    /**
      *
      * @param string $path
      *
@@ -88,9 +54,68 @@ class Qsh
         $path = str_replace(' ', '%20', $path);
 
         if ('/' !== $path[0]) {
-            $path = '/'.$path;
+            $path = '/' . $path;
         }
 
         return $path;
+    }
+
+    /**
+     * @param string $query
+     *
+     * @return string
+     */
+    private static function getCanonicalQuery($query = '')
+    {
+
+        if (empty($query)) {
+            return $query;
+        }
+
+        $queryArray = self::encodeQueryParts($query);
+
+        ksort($queryArray);
+
+        $query = self::buildQuery($queryArray);
+
+        return $query;
+    }
+
+    /**
+     * @param string $query
+     *
+     * @return array
+     */
+    private static function encodeQueryParts($query)
+    {
+        $queryParts = explode('&', $query);
+        $queryArray = [];
+
+        foreach ($queryParts as $queryPart) {
+            $pieces = explode('=', $queryPart, 2);
+
+            $key = rawurlencode($pieces[0]);
+            $value = rawurlencode($pieces[1]);
+
+            $queryArray[$key][] = $value;
+        }
+        return $queryArray;
+    }
+
+    /**
+     * @param array $queryArray
+     *
+     * @return string
+     */
+    private static function buildQuery($queryArray)
+    {
+        $query = '';
+        foreach ($queryArray as $key => $pieceOfQuery) {
+            $pieceOfQuery = implode(',', $pieceOfQuery);
+            $query .= $key . '=' . $pieceOfQuery . '&';
+        }
+
+        $query = rtrim($query, '&');
+        return $query;
     }
 }

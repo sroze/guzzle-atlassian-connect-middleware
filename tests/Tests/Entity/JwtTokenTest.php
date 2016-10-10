@@ -94,7 +94,7 @@ class JwtTokenTest extends TestCase
                 'sub'     => $tokenValues['subject'],
                 'context' => $tokenValues['context']
             ],
-            $token->sign(false)
+            $token->buildPayload()
         );
 
         $this->assertEquals(
@@ -112,7 +112,7 @@ class JwtTokenTest extends TestCase
             '0ZXh0Ijp7InVzZXIiOnsidXNlcktleSI6IkJhdG1hbiIsInVzZXJuYW1lIjoiYnJ1Y2V3YXluZSIsImRpc3BsYXlOYW1lIjoiQnJ' .
             '1Y2llIn19LCJzdWIiOiJ0aGVTdWJqZWN0IiwiYXVkIjoiQXVkaWVuY2UifQ.VfvMt5u4yFNdF2j_MK1EB1A663v9NHuDxylnb' .
             'ee0k1c',
-            $token.''
+            (string) $token
         );
 
     }
@@ -149,7 +149,7 @@ class JwtTokenTest extends TestCase
                 'exp' => $tokenValues['issuedAtTime'] + $tokenValues['validity'],
                 'qsh' => '909144220b8eb4799623bdbb198a01485d4a7ad975d261cdfe14dafe021748c3',
             ],
-            $token->sign(false)
+            $token->buildPayload()
         );
 
         $this->assertEquals(
@@ -163,7 +163,7 @@ class JwtTokenTest extends TestCase
             'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0SXNzdWVyIiwiaWF0IjoxMjM0NTY3LCJleHAiOjEyMzgxNjcsInF' .
             'zaCI6IjkwOTE0NDIyMGI4ZWI0Nzk5NjIzYmRiYjE5OGEwMTQ4NWQ0YTdhZDk3NWQyNjFjZGZlMTRkYWZlMDIxNzQ4YzMifQ.eneZ' .
             'Ncg42dCVpB4krbqktMByMPXv1QYbiV-M50Q212A',
-            $token.''
+            (string) $token
         );
 
 

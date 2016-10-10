@@ -37,7 +37,7 @@ services:
             - .:/var/www/atlconnect
 
     nginx:
-        image: he8us/nginx
+        image: he8us/nginx:latest
         expose:
             - "80"
         environment:
@@ -66,10 +66,6 @@ services:
             - backend
 
 
-
-
 networks:
     proxy:
-        driver: bridge
     backend:
-        driver: bridge
