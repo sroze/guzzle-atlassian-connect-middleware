@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
  * this is needed to sign our request and to validate the requests from the application.
  */
 $payload = new Payload('payload.json');
-$applicationKey =  'eu.adlogix.atlassian-connect';
+$applicationKey = 'eu.adlogix.atlassian-connect';
 
 
 /**

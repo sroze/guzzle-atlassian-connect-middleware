@@ -74,11 +74,9 @@ class Descriptor
      */
     public function addScope($scope)
     {
-        if (!$this->validateScopeValue($scope)) {
-            throw new \InvalidArgumentException(sprintf("Unknown scope %s", $scope));
-        }
+        $this->validateScopeValue($scope);
 
-        if (in_array($scope, $this->descriptor['scopes'])) {
+        if (false !== $this->getScopeKey($scope)) {
             return $this;
         }
 
@@ -104,7 +102,18 @@ class Descriptor
             case self::SCOPE_CONFLUENCE_SPACE_ADMIN:
                 return true;
         }
-        return false;
+        throw new \InvalidArgumentException(sprintf("Unknown scope %s", $scope));
+    }
+
+    /**
+     * @param $scope
+     *
+     * @return mixed
+     */
+    private function getScopeKey($scope)
+    {
+        $key = array_search($scope, $this->descriptor['scopes']);
+        return $key;
     }
 
     /**
@@ -115,11 +124,9 @@ class Descriptor
      */
     public function removeScope($scope)
     {
-        if (!$this->validateScopeValue($scope)) {
-            throw new \InvalidArgumentException(sprintf("Unknown scope %s", $scope));
-        }
+        $this->validateScopeValue($scope);
 
-        $key = array_search($scope, $this->descriptor['scopes']);
+        $key = $this->getScopeKey($scope);
         if (false === $key) {
             return $this;
         }
@@ -230,7 +237,6 @@ class Descriptor
         return $this;
     }
 
-
     /**
      * @param string $name
      * @param array  $description
@@ -246,7 +252,6 @@ class Descriptor
 
     /**
      * @param string $name
-     * @param array  $description
      *
      * @return $this
      */
