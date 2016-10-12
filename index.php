@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
  * this is needed to sign our request and to validate the requests from the application.
  */
 $payload = new Payload('payload.json');
+$applicationKey =  'eu.adlogix.atlassian-connect';
 
 
 /**
@@ -44,7 +45,7 @@ $payload = new Payload('payload.json');
  * so be sure you received the 'enabled' webhook call before trying to contact it.
  */
 $middleware = new ConnectMiddleware(
-    new HeaderAuthentication('eu.adlogix.confluence-client', $payload->getSharedSecret()),
+    new HeaderAuthentication($applicationKey, $payload->getSharedSecret()),
     $payload->getBaseUrl()
 );
 
@@ -89,7 +90,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), [
  * You can validate your descriptor
  * @see https://atlassian-connect-validator.herokuapp.com/validate
  */
-$app->get('/descriptor.json', function (Request $request) {
+$app->get('/descriptor.json', function (Request $request) use ($applicationKey) {
 
     /*
      * We have to construct the correct URL in order to confluence be able to contact us
@@ -102,21 +103,15 @@ $app->get('/descriptor.json', function (Request $request) {
         $scheme = 'https';
     }
 
+    $descriptor = new \Adlogix\GuzzleAtlassianConnect\Entity\Descriptor($scheme . '://' . $host, $applicationKey);
 
-    return json_encode([
-        'authentication' => [
-            'type' => 'jwt'
-        ],
-        'baseUrl'        => $scheme . '://' . $host,
-        'scopes'         => [
-            'read'
-        ],
-        'key'            => 'ourKey',
-        'lifecycle'      => [
-            'installed' => '/installed',
-            'enabled'   => '/enabled'
-        ],
-    ]);
+    $descriptor->addScope(\Adlogix\GuzzleAtlassianConnect\Entity\Descriptor::SCOPE_READ)
+        ->setLifecycleWebhooks(
+            '/installed',
+            '/enabled'
+        );
+
+    return $descriptor->getJson();
 });
 
 /**

@@ -21,6 +21,7 @@ use GuzzleHttp\HandlerStack;
  * this is needed to sign our request and to validate the requests from the application.
  */
 $payload = new Payload('payload.json');
+$applicationKey =  'eu.adlogix.atlassian-connect';
 
 
 /**
@@ -41,7 +42,7 @@ $payload = new Payload('payload.json');
  * so be sure you received the 'enabled' webhook call before trying to contact it.
  */
 $middleware = new ConnectMiddleware(
-    new QueryParamAuthentication('eu.adlogix.confluence-client', $payload->getSharedSecret()),
+    new QueryParamAuthentication($applicationKey, $payload->getSharedSecret()),
     $payload->getBaseUrl()
 );
 
