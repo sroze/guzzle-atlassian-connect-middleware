@@ -27,7 +27,6 @@ class Descriptor
         'authentication' => [
             'type' => 'jwt'
         ],
-        'modules'        => [],
         'scopes'         => []
     ];
 
@@ -226,14 +225,21 @@ class Descriptor
      *
      * @return $this
      */
-    public function setLifecycleWebhooks($installed, $enabled, $disabled = '', $uninstalled = '')
+    public function setLifecycleWebhooks($installed, $enabled, $disabled = null, $uninstalled = null)
     {
         $this->descriptor['lifecycle'] = [
-            "installed"   => $installed,
-            "uninstalled" => $uninstalled,
-            "enabled"     => $enabled,
-            "disabled"    => $disabled
+            'installed' => $installed,
+            'enabled'   => $enabled,
         ];
+
+        if (null !== $disabled) {
+            $this->descriptor['lifecycle']['disabled'] = $disabled;
+        }
+
+        if (null !== $uninstalled) {
+            $this->descriptor['lifecycle']['uninstalled'] = $uninstalled;
+        }
+
         return $this;
     }
 
@@ -245,6 +251,9 @@ class Descriptor
      */
     public function addModule($name, array $description)
     {
+        if (!isset($this->descriptor['modules'])) {
+            $this->descriptor['modules'] = [];
+        }
         $this->descriptor['modules'][$name] = $description;
 
         return $this;
